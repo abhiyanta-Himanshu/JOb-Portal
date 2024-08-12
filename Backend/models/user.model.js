@@ -24,18 +24,16 @@ const userSchema = new mongoose.Schema({
         required : true
     },
     profile:{
-        bio : {
-            type : String,
-            skills : [{type : String}],
-            resume : {type:String}, // url to resume.
-            resumeOriginalName : {type:String},
-            company : {type:mongoose.Schema.Types.ObjectId , ref : 'Company'},
-            profilePhoto : {
+        bio : {type : String,},
+        skills : [{type : String}],
+        resume : {type:String}, // url to resume.
+        resumeOriginalName : {type:String},
+        company : {type:mongoose.Schema.Types.ObjectId , ref : 'Company'},
+        profilePhoto : {
                 type : String,
                 default : ""
             }
-        }
-    },
+        },
 }, {timestamps:true});
 
 export const User = mongoose.model('User' , userSchema);

@@ -4,15 +4,16 @@ import cors from "cors"
 import dotenv from "dotenv"
 dotenv.config({})
 import { connectDB } from "./utils/db.js";
+import userRoute from "./routes/user.route.js"
 
 const app = express();
 
-app.get('/' , (req,res) => {
-    return res.status(200).json({
-        message : "This is from backend",
-        success : true
-    })
-})
+// app.get('/' , (req,res) => {
+//     return res.status(200).json({
+//         message : "This is from backend",
+//         success : true
+//     })
+// })
 
 app.use(express.json());
 app.use(urlencoded({extended : true}));
@@ -23,6 +24,9 @@ const corsOptions = {
     credentials : true
 }
 app.use(cors(corsOptions))
+
+
+app.use("/api/v1/user/" , userRoute)
 
 const PORT = process.env.PORT || 3030
 
