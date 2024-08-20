@@ -9,6 +9,10 @@ import { useState } from "react"
 import axios from "axios"
 import { USER_API_END_POINT } from "../../utils/constant"
 
+import { useDispatch, useSelector } from "react-redux"
+import { setLoading } from "../../redux/authslice"
+import { Loader2 } from "lucide-react"
+
 export default function Signup() {
 
   const [input, setInput] = useState({
@@ -19,8 +23,10 @@ export default function Signup() {
     role: "",
     file: ""
   })
+  const {loading} = useSelector(store => store.auth);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -45,6 +51,7 @@ export default function Signup() {
     }
 
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData , {
         header : {
           "Content-Type" : "multipart/form-data"
@@ -60,6 +67,8 @@ export default function Signup() {
     } catch (error) {
       console.log(error)
       toast.error(error.response.data.message)
+    } finally{
+      setLoading(false);
     }
   }
 
@@ -151,12 +160,22 @@ export default function Signup() {
               />
             </div>
 
-            <div className="my-5">
+            {
+                            loading ? <Button className='flex justify-center w-1/2 m-5'> 
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin"/> PLease Wait </Button> : <div className="my-5">
+                            <Button
+                                type='submit'
+                                className='w-full'
+                            >Sign up</Button>
+                        </div>
+                        }
+
+            {/* <div className="my-5">
               <Button
                 type='submit'
                 className='w-full'
               >Sign Up</Button>
-            </div>
+            </div> */}
 
             <span
               className="text-sm"
