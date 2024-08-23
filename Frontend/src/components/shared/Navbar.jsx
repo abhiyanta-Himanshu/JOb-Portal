@@ -4,8 +4,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar.jsx"
 import {User2 , LogOut } from "lucide-react"
 import { Link } from "react-router-dom";
 
+import { useSelector } from "react-redux"
+
 function Navbar() {
-    let user = false;
+    
+    const {user } = useSelector(store => store.auth)
+
     return (
         <>
             <div
@@ -25,9 +29,13 @@ function Navbar() {
                         className="flex items-center gap-20"
                     >
                         <ul className='flex font-medium items-center gap-10'>
-                            <li>Home</li>
+                            {/* <li>Home</li>
                             <li>Jobs</li>
-                            <li>Browse</li>
+                            <li>Browse</li> */}
+                            <li><Link to={"/"}>Home</Link></li>
+                            <li><Link to={"/jobs"}>Job</Link></li>
+                            <li><Link to={"/browse"}>Browse</Link></li>
+                            
                         </ul>
 
                         {
@@ -73,7 +81,8 @@ function Navbar() {
                                     className="flex w-fit items-center gap-2 cursor-pointer"
                                     >
                                         <User2/>
-                                        <Button variant='link'>View Profile</Button>
+                                        <Button variant='link'>
+                                            <Link to={'/profile'}>View Profile</Link></Button>
                                     </div>
                                     <div
                                     className="flex w-fit items-center gap-2 cursor-pointer"

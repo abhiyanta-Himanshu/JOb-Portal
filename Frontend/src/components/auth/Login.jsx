@@ -10,7 +10,7 @@ import { useState } from "react"
 import { USER_API_END_POINT } from "../../utils/constant"
 
 import { useDispatch, useSelector } from "react-redux"
-import { setLoading } from "../../redux/authslice"
+import { setLoading , setUser } from "../../redux/authslice"
 import { Loader2 } from "lucide-react"
 
 export default function Login() {
@@ -43,6 +43,7 @@ export default function Login() {
             })
 
             if (res.data.success) {
+                dispatch(setUser(res.data.user))
                 navigate("/")
                 toast.success(res.data.message);
 
