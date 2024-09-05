@@ -9,6 +9,11 @@ import companyRoute from "./routes/company.route.js"
 import jobRoute from "./routes/job.route.js"
 import applicationRoute from "./routes/application.route.js"
 
+import cloudinary from "./utils/cloudinary.js"
+// console.log("Cloud Name:", process.env.CLOUDINARY_CLOUD_NAME);
+// console.log("API Key:", process.env.CLOUDINARY_API_KEY);
+// console.log("API Secret:", process.env.CLOUDINARY_API_SECRET);
+
 const app = express();
 
 app.use(express.json());
