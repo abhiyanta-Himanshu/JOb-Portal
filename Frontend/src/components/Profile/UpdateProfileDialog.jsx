@@ -34,7 +34,8 @@ export const UpdateProfileDialog = ({ open, setOpen }) => {
         phoneNumber : user?.phoneNumber,
         bio : user?.profile?.bio,
         skills : user?.profile?.skills?.map(skill=>skill),
-        file : user?.profile?.resume
+        file : user?.profile?.resume,
+        filename : user?.profile?.resumeOriginalName
     })
 
     const changeEventHandler = (e) => {
@@ -44,7 +45,7 @@ export const UpdateProfileDialog = ({ open, setOpen }) => {
     const changeFileHandler = (e) => {
         e.preventDefault()
         const file = e.target.files?.[0]
-        setInput(...input , file)
+        setInput({...input , file})
     }
 
     const submitHandler = async (e) => {
@@ -57,10 +58,11 @@ export const UpdateProfileDialog = ({ open, setOpen }) => {
         formData.append("skills" , input.skills)
         
         if (input.file) {
-            formData.append("resume" , input.resume)
+            formData.append("file" , input.file)
         }
 
         try {
+            setLoading(true)
             const res = await axios.post(`${USER_API_END_POINT}/profile/update` , formData , {
                 headers: {
                     'Content-Type' : 'multipart/form-data'
@@ -75,6 +77,8 @@ export const UpdateProfileDialog = ({ open, setOpen }) => {
         } catch (error) {
             console.log(error)
             toast.error(error.response.data.message)
+        }finally{
+            setLoading(false)
         }
         setOpen(false)
         console.log(input)
@@ -146,12 +150,12 @@ export const UpdateProfileDialog = ({ open, setOpen }) => {
                             <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor='resume' className='text-right'>resume</Label>
                                 <Input
-                                    id='resume'
-                                    name='resume'
+                                    id='file'
+                                    name='file'
                                     type='file'
+                                    // value={input.filename}
                                     onChange={changeFileHandler}
                                     accept="application/pdf"
-                                    value={input.file}
                                     className='col-span-3 rounded-lg'
                                 />
                             </div>
@@ -160,7 +164,8 @@ export const UpdateProfileDialog = ({ open, setOpen }) => {
                     
                     <DialogFooter>
                         {
-                            loading ? <Button className='flex justify-center w-1/2 m-5'> <Loader2 className="mr-2 h-4 w-4 animate-spin"></Loader2> PLease Wait </Button> : <div className="my-5">
+                            loading ? <Button className='flex justify-center w-1/2 m-5'> <Loader2 className="mr-2 h-4 w-4 animate-spin"></Loader2> PLease Wait </Button> : 
+                            <div className="my-5">
                                 <Button
                                     
                                     type='submit'

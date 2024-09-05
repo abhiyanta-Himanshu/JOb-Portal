@@ -7,10 +7,12 @@ import {Label} from "../ui/label"
 import AppliedJobTable from "./AppliedJobTable"
 import {UpdateProfileDialog} from "./UpdateProfileDialog"
 import { useState } from "react"
-
-const skills = ["html" , "js" , "react" , "node"];
+import { useSelector } from "react-redux"
 
 function Profile() {
+    const { user } = useSelector(store=>store.auth)
+    const skills = user?.profile?.skills
+
     const isResume = true
     const [open , setOpen] = useState(false)
     return (
@@ -23,7 +25,7 @@ function Profile() {
                             <AvatarImage src="https://github.com/shadcn.png" />
                             <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
-                        <h1 className="text-lg font-bold">Full Name</h1>
+                        <h1 className="text-lg font-bold">{user?.fullname}</h1>
                     </div>
 
                     <div >
@@ -31,18 +33,18 @@ function Profile() {
                     </div>
                 </div>
                 <div className="my-5 text-sm text-gray-600">
-                    <p>Add your Bio here : Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, quam quibusdam, quis doloribus distinctio ipsum sint possimus repellat consectetur ipsam in deserunt explicabo, veniam quia. Praesentium nobis totam nisi quasi!</p>
+                    <p>{user?.profile?.bio}</p>
                 </div>
 
                 <div>
                     <div className="flex items-center gap-10">
                        <Mail/>
-                    <span>himanshu@gmail.com</span> 
+                    <span>{user?.email}</span> 
                     </div>
                     
                     <div className="flex items-center gap-10 my-5">
                         <Contact/>
-                    <span>8527419630</span>
+                    <span>{user?.phoneNumber}</span>
                     </div>
                     
                 </div>
@@ -63,7 +65,7 @@ function Profile() {
                     <Label className='text-md font-bold'>Resume</Label>
 
                     {
-                        isResume ? <a target="blank" href="https://www.google.com" className="text-blue-500 text-sm hover:underline cursor-pointer">Open Resume</a> :
+                        isResume ? <a target="blank" href={user?.profile?.resume} className="text-blue-500 text-sm hover:underline cursor-pointer">{user?.profile?.resumeOriginalName}</a> :
                         <span className="text-rose-600">Resume was not uploaded by User
                         </span>
                     }
